@@ -6,13 +6,51 @@
     android:layout_height="match_parent"
     tools:context="com.example.aileen.androiduav.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@mipmap/first_bg_img">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/first_logo"
+                android:layout_marginTop="50dp"
+                android:layout_width="190dp"
+                android:layout_height="190dp"
+                android:background="@mipmap/first_img_1"/>
+            <RelativeLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/first_problem"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerInParent="true"
+                    android:background="@mipmap/icon_problem"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <ImageView
+                    android:id="@+id/user_setup"
+                    android:background="@mipmap/user_setup"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                     />
+                <ImageView
+                    android:id="@+id/first_close"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:background="@mipmap/icon_close"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

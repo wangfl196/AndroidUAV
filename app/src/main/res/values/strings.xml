@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AndroidUAV</string>
+    <string name="app_name">Aileen</string>
+    <string name="out_tips">无人机处于启动状态中，确认退出吗？</string>
 </resources>
