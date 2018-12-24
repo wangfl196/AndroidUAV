@@ -22,12 +22,13 @@ public class MainControllerActivity extends BaseActivity {
     private ImageView imageViewDirectionRight; //方向键 右
     private ImageView imageViewRise; //升起
     private ImageView imageViewLand; //降落
+    private ImageView UavStable; //悬停
     private RockerView rockerView1;
     private RockerView rockerView2;
     private RelativeLayout direction_1;
     private RelativeLayout direction_2;
     private setDirection setDirection;
-
+    private UAVApplication UAV; //application
     private TextView tv;
 
 
@@ -41,7 +42,8 @@ public class MainControllerActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_controller);
-
+        UAV = (UAVApplication) this.getApplication();
+        UavStable = findViewById(R.id.uav_stable);
         //初始化
         initController();
 
@@ -125,13 +127,16 @@ public class MainControllerActivity extends BaseActivity {
      * 初始化
      */
     private void initController () {
+        //初始化数据
+        UAV.setActionSign(UAV.ACTION_SIGN_START); //设置无人机启动标识
+
         //获取方向键
-        imageViewDirectionUp      = (ImageView) findViewById(R.id.direction_up);
-        imageViewDirectionDown    = (ImageView) findViewById(R.id.direction_down);
-        imageViewDirectionLeft    = (ImageView) findViewById(R.id.direction_left);
-        imageViewDirectionRight   = (ImageView) findViewById(R.id.direction_right);
-        imageViewRise             = (ImageView) findViewById(R.id.rise);
-        imageViewLand             = (ImageView) findViewById(R.id.land);
+        imageViewDirectionUp      = findViewById(R.id.direction_up);
+        imageViewDirectionDown    = findViewById(R.id.direction_down);
+        imageViewDirectionLeft    = findViewById(R.id.direction_left);
+        imageViewDirectionRight   = findViewById(R.id.direction_right);
+        imageViewRise             = findViewById(R.id.rise);
+        imageViewLand             = findViewById(R.id.land);
         setDirection = new setDirection();
 
         //监听方向键按下、抬起
@@ -162,6 +167,20 @@ public class MainControllerActivity extends BaseActivity {
                     direction_2.setVisibility(View.GONE);
                 }
 
+            }
+        });
+
+        //
+        UavStable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (UAV.getUavStable() == UAV.UAV_STABLE_SIGN_OPEN) {
+                    UAV.setUavStable(UAV.UAV_STABLE_SIGN_CLOSE);
+                    UavStable.setImageDrawable(getResources().getDrawable(R.mipmap.uav_stable_close));
+                } else if (UAV.getUavStable() == UAV.UAV_STABLE_SIGN_CLOSE) {
+                    UAV.setUavStable(UAV.UAV_STABLE_SIGN_OPEN);
+                    UavStable.setImageDrawable(getResources().getDrawable(R.mipmap.uav_stable_open));
+                }
             }
         });
 
@@ -227,25 +246,26 @@ public class MainControllerActivity extends BaseActivity {
                 case  R.id.rise:
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
-                        imageViewRise.setAdjustViewBounds(true);
                         imageViewRise.setMaxWidth(60);
                         imageViewRise.setMaxHeight(60);
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                         imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
-
+                        imageViewLand.setAdjustViewBounds(true);
+                        imageViewLand.setMaxWidth(60);
+                        imageViewLand.setMaxHeight(55);
                     }
                     break;
                 //下降
                 case  R.id.land:
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
-                        imageViewLand.setAdjustViewBounds(true);
                         imageViewLand.setRotation(180);
-                        imageViewLand.setMaxWidth(60);
-                        imageViewLand.setMaxHeight(60);
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                         imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
+                        imageViewRise.setAdjustViewBounds(true);
                         imageViewLand.setRotation(180);
+                        imageViewLand.setMaxWidth(60);
+                        imageViewLand.setMaxHeight(55);
                     }
                     break;
                 default:

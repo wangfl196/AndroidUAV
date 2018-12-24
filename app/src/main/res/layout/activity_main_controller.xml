@@ -28,15 +28,27 @@
             <ImageView
                 android:layout_gravity="center"
                 android:layout_marginRight="50dp"
-                android:layout_width="34dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@mipmap/icon_btn_camera"/>
             <ImageView
                 android:layout_gravity="center"
                 android:layout_marginRight="50dp"
-                android:layout_width="35dp"
+                android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@mipmap/icon_btn_takeapicture"/>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginRight="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/icon_btn_wifi"/>
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginRight="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@mipmap/icon_btn_setup"/>
 
         </LinearLayout>
         <LinearLayout
@@ -110,7 +122,6 @@
                 android:layout_weight="1"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
-                android:background="#B3666666"
                 android:orientation="vertical">
                 <RelativeLayout
                     android:layout_weight="1"
@@ -156,14 +167,14 @@
                         android:id="@+id/rise"
                         android:layout_alignParentTop="true"
                         android:layout_centerInParent="true"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="55dp"
                         android:background="@mipmap/direction_icon_03"/>
                     <ImageView
                         android:id="@+id/land"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:layout_width="60dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="55dp"
                         android:rotation="180"
                         android:background="@mipmap/direction_icon_03"/>
@@ -185,10 +196,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/uav_stable"
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/icon_btn_wifi"/>
+                    android:background="@mipmap/uav_stable_close"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"
@@ -200,7 +212,7 @@
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/icon_btn_setup"/>
+                    android:background="@mipmap/aircraft_take_off"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"
@@ -212,7 +224,7 @@
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/icon_btn_location"/>
+                    android:background="@mipmap/aircraft_land"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"

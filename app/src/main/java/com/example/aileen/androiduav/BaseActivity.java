@@ -1,9 +1,14 @@
 package com.example.aileen.androiduav;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ import java.util.List;
  * +--------------------------------------------------------------------
  */
 public class BaseActivity extends AppCompatActivity {
+    protected String testVal;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,42 @@ public class BaseActivity extends AppCompatActivity {
         super.onDestroy();
         AtyContainer.getInstance().removeActivity(this);
     }
+
+    /**
+     * 设置旋转动画
+     * @return ObjectAnimator
+     */
+    protected ObjectAnimator setAnimator(ImageView imageView) {
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(imageView, "rotation", 0f, 360f);
+        animator.setRepeatMode(ValueAnimator.RESTART);
+        animator.setRepeatCount(-1);
+        LinearInterpolator lin = new LinearInterpolator();
+        animator.setInterpolator(lin);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //setAnimator(imageView);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+        animator.setDuration(5000);
+        return animator;
+    }
+
 }
 
 class AtyContainer {

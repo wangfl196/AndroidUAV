@@ -12,6 +12,8 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);//隐藏状态栏
         setContentView(R.layout.activity_welcome);
+
+        //开启线程 3秒后跳转
         Thread thread = new Thread() {
             @Override
             public void run() {
