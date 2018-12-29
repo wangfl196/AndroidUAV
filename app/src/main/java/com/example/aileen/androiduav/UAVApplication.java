@@ -35,7 +35,7 @@ public class UAVApplication extends Application {
     public static final int  ACTION_SIGN_STOP = 0; //关闭标识
     public static final int  UAV_STABLE_SIGN_OPEN = 1; //悬停开启标识
     public static final int  UAV_STABLE_SIGN_CLOSE = 0; //悬停关闭标识
-
+    public static final String BLUETOOTHVALUE = "00:0E:0E:0E:31:oB";
 
 
     /************************************

@@ -1,5 +1,8 @@
 package com.example.aileen.androiduav;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,8 @@ import android.widget.Toast;
 import com.example.aileen.androiduav.RockerView.Direction;
 import com.example.aileen.androiduav.RockerView.DirectionMode;
 import com.example.aileen.androiduav.RockerView.OnShakeListener;
+
+import java.util.UUID;
 
 public class MainControllerActivity extends BaseActivity {
     private int ActionSign;
@@ -29,6 +34,8 @@ public class MainControllerActivity extends BaseActivity {
     private RelativeLayout direction_2;
     private setDirection setDirection;
     private UAVApplication UAV; //application
+    private String UAVaddress = "00:0E:0E:0E:31:oB";
+    private byte[] data = new byte[34];
     private TextView tv;
 
 
@@ -274,5 +281,25 @@ public class MainControllerActivity extends BaseActivity {
             return true;
         }
     }
+
+    private class ConnetThread implements Runnable {
+        @Override
+        public void run() {
+            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();                   //获取适配器
+            BluetoothDevice device = adapter.getRemoteDevice(UAVApplication.BLUETOOTHVALUE);  //获取蓝牙设备
+            UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");                //获取UUID（可以不写在线程里）
+            try {
+                BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
+                socket.connect();
+
+                Outputstream out=socket.getOutputStream();    // 获取输出流
+                out.write(data);                        //发送数据
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
 }
