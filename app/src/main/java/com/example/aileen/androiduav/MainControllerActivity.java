@@ -17,6 +17,7 @@ import com.example.aileen.androiduav.RockerView.Direction;
 import com.example.aileen.androiduav.RockerView.DirectionMode;
 import com.example.aileen.androiduav.RockerView.OnShakeListener;
 
+import java.io.OutputStream;
 import java.util.UUID;
 
 public class MainControllerActivity extends BaseActivity {
@@ -292,7 +293,7 @@ public class MainControllerActivity extends BaseActivity {
                 BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
                 socket.connect();
 
-                Outputstream out=socket.getOutputStream();    // 获取输出流
+                OutputStream out = socket.getOutputStream();    // 获取输出流
                 out.write(data);                        //发送数据
             } catch (Exception e) {
                 e.printStackTrace();
