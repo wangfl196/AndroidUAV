@@ -29,14 +29,16 @@ public class MainControllerActivity extends BaseActivity {
     private ImageView imageViewRise; //升起
     private ImageView imageViewLand; //降落
     private ImageView UavStable; //悬停
+    private ImageView Connect; //悬停
     private RockerView rockerView1;
     private RockerView rockerView2;
     private RelativeLayout direction_1;
     private RelativeLayout direction_2;
     private setDirection setDirection;
     private UAVApplication UAV; //application
-    private String UAVaddress = "00:0E:0E:0E:31:oB";
+    private Thread ConnectThread; //连接蓝牙线程
     private byte[] data = new byte[34];
+    private OutputStream out;
     private TextView tv;
 
 
@@ -100,31 +102,22 @@ public class MainControllerActivity extends BaseActivity {
             public void direction(Direction direction) {
                 if (direction == RockerView.Direction.DIRECTION_CENTER){
                     Log.d("方向", "中心") ;
-//                    tv.setText("中心");
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN){
                     Log.d("方向", "下") ;
-//                    tv.setText("下");
                 }else if (direction == RockerView.Direction.DIRECTION_LEFT){
                     Log.d("方向", "左") ;
-//                    tv.setText("左");
                 }else if (direction == RockerView.Direction.DIRECTION_UP){
                     Log.d("方向", "上") ;
-//                    tv.setText("上");
                 }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
                     Log.d("方向", "") ;
-//                    tv.setText("右");
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
                     Log.d("方向", "左下") ;
-//                    tv.setText("左下");
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
                     Log.d("方向", "右下") ;
-//                    tv.setText("右下");
                 }else if (direction == RockerView.Direction.DIRECTION_UP_LEFT){
                     Log.d("方向", "左上") ;
-//                    tv.setText("左上");
                 }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
                     Log.d("方向", "右上") ;
-//                    tv.setText("右上");
                 }
 
             }
@@ -135,6 +128,8 @@ public class MainControllerActivity extends BaseActivity {
      * 初始化
      */
     private void initController () {
+        //初始化data数据
+
         //初始化数据
         UAV.setActionSign(UAV.ACTION_SIGN_START); //设置无人机启动标识
 
@@ -188,6 +183,22 @@ public class MainControllerActivity extends BaseActivity {
                 } else if (UAV.getUavStable() == UAV.UAV_STABLE_SIGN_CLOSE) {
                     UAV.setUavStable(UAV.UAV_STABLE_SIGN_OPEN);
                     UavStable.setImageDrawable(getResources().getDrawable(R.mipmap.uav_stable_open));
+                }
+            }
+        });
+
+        /**** 连 接 蓝 牙****/
+        //初始化线程
+        ConnectThread = new Thread(new ConnetThread());
+        findViewById(R.id.connect).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (UAV.getActionSign() == 1) {
+                    UAV.setActionSign(UAV.ACTION_SIGN_STOP);
+
+                } else if (UAV.getActionSign() == 0) {
+                    UAV.setActionSign(UAV.ACTION_SIGN_START);
+                    ConnectThread.start(); //开启线程
                 }
             }
         });
@@ -293,7 +304,7 @@ public class MainControllerActivity extends BaseActivity {
                 BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
                 socket.connect();
 
-                OutputStream out = socket.getOutputStream();    // 获取输出流
+                out = socket.getOutputStream();    // 获取输出流
                 out.write(data);                        //发送数据
             } catch (Exception e) {
                 e.printStackTrace();
@@ -302,5 +313,41 @@ public class MainControllerActivity extends BaseActivity {
     }
 
 
+    private void setData() {
+        data[0] = (byte) 0xAA;
+        data[1] = (byte) 0xAA;
+        data[2] = (byte) 0xAA;
+        data[3] = (byte) 0xAA;
+        data[4] = (byte) 0xAA;
+        data[5] = (byte) 0xAA;
+        data[6] = (byte) 0xAA;
+        data[7] = (byte) 0xAA;
+        data[8] = (byte) 0xAA;
+        data[9] = (byte) 0xAA;
+        data[10] = (byte) 0xAA;
+        data[11] = (byte) 0xAA;
+        data[12] = (byte) 0xAA;
+        data[13] = (byte) 0xAA;
+        data[14] = (byte) 0xAA;
+        data[15] = (byte) 0xAA;
+        data[16] = (byte) 0xAA;
+        data[17] = (byte) 0xAA;
+        data[18] = (byte) 0xAA;
+        data[19] = (byte) 0xAA;
+        data[20] = (byte) 0xAA;
+        data[21] = (byte) 0xAA;
+        data[22] = (byte) 0xAA;
+        data[23] = (byte) 0xAA;
+        data[24] = (byte) 0xAA;
+        data[25] = (byte) 0xAA;
+        data[26] = (byte) 0xAA;
+        data[27] = (byte) 0xAA;
+        data[28] = (byte) 0xAA;
+        data[29] = (byte) 0xAA;
+        data[30] = (byte) 0xAA;
+        data[31] = (byte) 0xAA;
+        data[32] = (byte) 0xAA;
+        data[33] = (byte) 0xAA;
+    }
 
 }

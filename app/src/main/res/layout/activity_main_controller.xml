@@ -38,6 +38,7 @@
                 android:layout_height="30dp"
                 android:background="@mipmap/icon_btn_takeapicture"/>
             <ImageView
+                android:id="@+id/connect"
                 android:layout_gravity="center"
                 android:layout_marginRight="50dp"
                 android:layout_width="30dp"
