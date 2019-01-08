@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aileen.androiduav.RockerView.Direction;
@@ -39,7 +38,6 @@ public class MainControllerActivity extends BaseActivity {
     private Thread ConnectThread; //连接蓝牙线程
     private byte[] data = new byte[34];
     private OutputStream out;
-    private TextView tv;
 
 
     /******************************************************
@@ -101,12 +99,15 @@ public class MainControllerActivity extends BaseActivity {
             @Override
             public void direction(Direction direction) {
                 if (direction == RockerView.Direction.DIRECTION_CENTER){
+
+
                     Log.d("方向", "中心") ;
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN){
                     Log.d("方向", "下") ;
                 }else if (direction == RockerView.Direction.DIRECTION_LEFT){
                     Log.d("方向", "左") ;
                 }else if (direction == RockerView.Direction.DIRECTION_UP){
+
                     Log.d("方向", "上") ;
                 }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
                     Log.d("方向", "") ;
@@ -129,9 +130,9 @@ public class MainControllerActivity extends BaseActivity {
      */
     private void initController () {
         //初始化data数据
-
+        setData();
         //初始化数据
-        UAV.setActionSign(UAV.ACTION_SIGN_START); //设置无人机启动标识
+        UAV.setActionSign(UAV.ACTION_SIGN_STOP); //设置无人机启动标识
 
         //获取方向键
         imageViewDirectionUp      = findViewById(R.id.direction_up);
@@ -173,6 +174,7 @@ public class MainControllerActivity extends BaseActivity {
             }
         });
 
+
         //
         UavStable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +185,9 @@ public class MainControllerActivity extends BaseActivity {
                 } else if (UAV.getUavStable() == UAV.UAV_STABLE_SIGN_CLOSE) {
                     UAV.setUavStable(UAV.UAV_STABLE_SIGN_OPEN);
                     UavStable.setImageDrawable(getResources().getDrawable(R.mipmap.uav_stable_open));
+                    //线程结束之后不能再次start 必须重新开启新的线程;
+                    Thread SendThread = new Thread(new SendThread());
+                    SendThread.start();
                 }
             }
         });
@@ -195,10 +200,22 @@ public class MainControllerActivity extends BaseActivity {
             public void onClick(View view) {
                 if (UAV.getActionSign() == 1) {
                     UAV.setActionSign(UAV.ACTION_SIGN_STOP);
-
                 } else if (UAV.getActionSign() == 0) {
                     UAV.setActionSign(UAV.ACTION_SIGN_START);
                     ConnectThread.start(); //开启线程
+                }
+            }
+        });
+
+
+
+        findViewById(R.id.fix).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    out.write(data);                        //发送数据
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -299,55 +316,70 @@ public class MainControllerActivity extends BaseActivity {
         public void run() {
             BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();                   //获取适配器
             BluetoothDevice device = adapter.getRemoteDevice(UAVApplication.BLUETOOTHVALUE);  //获取蓝牙设备
-            UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");                //获取UUID（可以不写在线程里）
+            UUID uuid = UUID.fromString(UAVApplication.UAVUUID);                //获取UUID（可以不写在线程里）
             try {
                 BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
                 socket.connect();
 
                 out = socket.getOutputStream();    // 获取输出流
-                out.write(data);                        //发送数据
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
+    private class SendThread implements Runnable {
+        @Override
+        public void run() {
+            while (UAV.getUavStable()) {
+                try {
+                    out.write(data);//发送数据
+                    Thread.sleep(5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
 
     private void setData() {
         data[0] = (byte) 0xAA;
-        data[1] = (byte) 0xAA;
-        data[2] = (byte) 0xAA;
-        data[3] = (byte) 0xAA;
-        data[4] = (byte) 0xAA;
-        data[5] = (byte) 0xAA;
-        data[6] = (byte) 0xAA;
-        data[7] = (byte) 0xAA;
-        data[8] = (byte) 0xAA;
-        data[9] = (byte) 0xAA;
-        data[10] = (byte) 0xAA;
-        data[11] = (byte) 0xAA;
-        data[12] = (byte) 0xAA;
-        data[13] = (byte) 0xAA;
-        data[14] = (byte) 0xAA;
-        data[15] = (byte) 0xAA;
-        data[16] = (byte) 0xAA;
-        data[17] = (byte) 0xAA;
-        data[18] = (byte) 0xAA;
-        data[19] = (byte) 0xAA;
-        data[20] = (byte) 0xAA;
-        data[21] = (byte) 0xAA;
-        data[22] = (byte) 0xAA;
-        data[23] = (byte) 0xAA;
-        data[24] = (byte) 0xAA;
-        data[25] = (byte) 0xAA;
-        data[26] = (byte) 0xAA;
-        data[27] = (byte) 0xAA;
-        data[28] = (byte) 0xAA;
-        data[29] = (byte) 0xAA;
-        data[30] = (byte) 0xAA;
-        data[31] = (byte) 0xAA;
-        data[32] = (byte) 0xAA;
-        data[33] = (byte) 0xAA;
+        data[1] = (byte) 0xC0;
+        data[2] = (byte) 0x1C;
+        data[3] = (byte) (300>>8);
+        data[4] = (byte) 300&0xff;
+//        data[5] = (byte) (300>>8);
+//        data[6] = (byte) 300&0xff;
+//        data[7] = (byte) 0xAA;
+//        data[8] = (byte) 0xAA;
+//        data[9] = (byte) 0xAA;
+//        data[10] = (byte) 0xAA;
+//        data[11] = (byte) 0x00;
+//        data[12] = (byte) 0x00;
+//        data[13] = (byte) 0x00;
+//        data[14] = (byte) 0x00;
+//        data[15] = (byte) 0x00;
+//        data[16] = (byte) 0x00;
+//        data[17] = (byte) 0x00;
+//        data[18] = (byte) 0x00;
+//        data[19] = (byte) 0x00;
+//        data[20] = (byte) 0x00;
+//        data[21] = (byte) 0x00;
+//        data[22] = (byte) 0x00;
+//        data[23] = (byte) 0x00;
+//        data[24] = (byte) 0x00;
+//        data[25] = (byte) 0x00;
+//        data[26] = (byte) 0x00;
+//        data[27] = (byte) 0x00;
+//        data[28] = (byte) 0x00;
+//        data[29] = (byte) 0x00;
+//        data[30] = (byte) 0x00;
+        data[31] = (byte) 0x1C;
+        data[32] = (byte) 0x0D;
+        data[33] = (byte) 0x0A;
     }
 
 }
