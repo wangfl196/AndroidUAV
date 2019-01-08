@@ -11,6 +11,9 @@ public class UserSetupActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_setup);
 
+        EditText editText = findViewById(R.id.edit_bluetooth);
+        editText.setText(UAVApplication.BLUETOOTHVALUE);
+
         //确认
         findViewById(R.id.info_confirm_btn).setOnClickListener(new View.OnClickListener() {
             @Override

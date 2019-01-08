@@ -131,19 +131,41 @@
                     android:layout_height="match_parent">
 
                 </RelativeLayout>
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     >
-                    <SeekBar
+                    <ImageView
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
                         android:layout_gravity="center"
-                        android:progressDrawable="@drawable/uavseekbar"
-                        android:thumb="@drawable/seekbar_btn"
-                        android:maxHeight="3dp"
-                        android:minHeight="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@mipmap/add"/>
+                    <LinearLayout
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="180dp"
+                        android:layout_height="match_parent">
+                        <SeekBar
+                            android:layout_gravity="center"
+                            android:progressDrawable="@drawable/uavseekbar"
+                            android:thumb="@drawable/seekbar_btn"
+                            android:maxHeight="3dp"
+                            android:minHeight="3dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:background="@mipmap/reduce"/>
+                </RelativeLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_weight="1"

@@ -311,6 +311,10 @@ public class MainControllerActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * 蓝牙连接Socket
+     */
     private class ConnetThread implements Runnable {
         @Override
         public void run() {
@@ -327,6 +331,7 @@ public class MainControllerActivity extends BaseActivity {
             }
         }
     }
+
 
     private class SendThread implements Runnable {
         @Override
