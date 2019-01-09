@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.aileen.androiduav.RockerView.Direction;
 import com.example.aileen.androiduav.RockerView.DirectionMode;
@@ -25,8 +25,6 @@ public class MainControllerActivity extends BaseActivity {
     private ImageView imageViewDirectionDown; //方向键 下
     private ImageView imageViewDirectionLeft; //方向键 左
     private ImageView imageViewDirectionRight; //方向键 右
-    private TextView direction_val; //油门值
-    private TextView throttle_val;
     private ImageView imageViewRise; //升起
     private ImageView imageViewLand; //降落
     private ImageView UavStable; //悬停
@@ -38,12 +36,9 @@ public class MainControllerActivity extends BaseActivity {
     private setDirection setDirection;
     private UAVApplication UAV; //application
     private Thread ConnectThread; //连接蓝牙线程
-    private BluetoothSocket socket;
     private byte[] data = new byte[34];
     private OutputStream out;
 
-    //写入数组数据
-    private int data3_4 = 300;
 
     /******************************************************
 
@@ -57,7 +52,6 @@ public class MainControllerActivity extends BaseActivity {
         setContentView(R.layout.activity_main_controller);
         UAV = (UAVApplication) this.getApplication();
         UavStable = findViewById(R.id.uav_stable);
-
         //初始化
         initController();
 
@@ -88,10 +82,9 @@ public class MainControllerActivity extends BaseActivity {
 
     public void initrokerview(){
         //找到RockerView控件
-        RockerView rokerLeft = (RockerView) findViewById(R.id.rocker_1);
-        RockerView rokerRight = (RockerView) findViewById(R.id.rocker_2);
+        RockerView roker = (RockerView) findViewById(R.id.rocker_1);
         //实时监测摇动方向
-        rokerLeft.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
+        roker.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
             //开始摇动时要执行的代码写在本方法里
             @Override
             public void onStart() {
@@ -100,26 +93,23 @@ public class MainControllerActivity extends BaseActivity {
             //结束摇动时要执行的代码写在本方法里
             @Override
             public void onFinish() {
-//                Toast.makeText(MainControllerActivity.this, "已复位", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainControllerActivity.this, "已复位", Toast.LENGTH_SHORT).show();
             }
             //摇动方向时要执行的代码写在本方法里
             @Override
             public void direction(Direction direction) {
                 if (direction == RockerView.Direction.DIRECTION_CENTER){
-                    direction_val.setText("/");
+
+
                     Log.d("方向", "中心") ;
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN){
-                    direction_val.setText("下");
                     Log.d("方向", "下") ;
                 }else if (direction == RockerView.Direction.DIRECTION_LEFT){
-                    direction_val.setText("左");
                     Log.d("方向", "左") ;
                 }else if (direction == RockerView.Direction.DIRECTION_UP){
-                    direction_val.setText("上");
                     Log.d("方向", "上") ;
                 }else if (direction == RockerView.Direction.DIRECTION_RIGHT){
-                    direction_val.setText("右");
-                    Log.d("方向", "右") ;
+                    Log.d("方向", "") ;
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN_LEFT){
                     Log.d("方向", "左下") ;
                 }else if (direction == RockerView.Direction.DIRECTION_DOWN_RIGHT){
@@ -129,34 +119,7 @@ public class MainControllerActivity extends BaseActivity {
                 }else if (direction == RockerView.Direction.DIRECTION_UP_RIGHT){
                     Log.d("方向", "右上") ;
                 }
-            }
-        });
 
-
-        //右摇杆——油门
-        rokerRight.setOnShakeListener(DirectionMode.DIRECTION_8, new OnShakeListener() {
-            //开始摇动时要执行的代码写在本方法里
-            @Override
-            public void onStart() {
-
-            }
-            //结束摇动时要执行的代码写在本方法里
-            @Override
-            public void onFinish() {
-//                Toast.makeText(MainControllerActivity.this, "已复位", Toast.LENGTH_SHORT).show();
-            }
-            //摇动方向时要执行的代码写在本方法里
-            @Override
-            public void direction(Direction direction) {
-                if (direction == RockerView.Direction.DIRECTION_CENTER){
-                    Log.d("方向", "中心") ;
-                }else if (direction == RockerView.Direction.DIRECTION_UP){
-
-                    Log.d("方向", "加") ;
-                }else if (direction == RockerView.Direction.DIRECTION_DOWN){
-
-                    Log.d("方向", "减") ;
-                }
             }
         });
     }
@@ -169,10 +132,6 @@ public class MainControllerActivity extends BaseActivity {
         setData();
         //初始化数据
         UAV.setActionSign(UAV.ACTION_SIGN_STOP); //设置无人机启动标识
-        direction_val = findViewById(R.id.direction_val); //油门值
-        throttle_val = findViewById(R.id.throttle_val); //方向
-        //油门值视图初始化
-        throttle_val.setText("" + data3_4);
 
         //获取方向键
         imageViewDirectionUp      = findViewById(R.id.direction_up);
@@ -214,6 +173,7 @@ public class MainControllerActivity extends BaseActivity {
             }
         });
 
+
         //
         UavStable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,16 +197,11 @@ public class MainControllerActivity extends BaseActivity {
         findViewById(R.id.connect).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (UAV.getActionSign() == 0) {
+                if (UAV.getActionSign() == 1) {
+                    UAV.setActionSign(UAV.ACTION_SIGN_STOP);
+                } else if (UAV.getActionSign() == 0) {
                     UAV.setActionSign(UAV.ACTION_SIGN_START);
                     ConnectThread.start(); //开启线程
-                } else if(UAV.getActionSign() == 1) {
-//                    try {
-//                        socket.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                 }
             }
         });
@@ -264,36 +219,6 @@ public class MainControllerActivity extends BaseActivity {
             }
         });
 
-
-        //
-        findViewById(R.id.throttle_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                data3_4 += 100;
-                if (data3_4 > 1000) {
-                    data3_4 = 1000;
-                }
-                data[3] = (byte) (data3_4>>8);
-                data[4] = (byte) ((byte) data3_4&0xff);
-
-                throttle_val.setText("" + data3_4);
-            }
-        });
-
-        findViewById(R.id.throttle_reduce).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                data3_4 -= 50;
-                if (data3_4 < 0) {
-                    data3_4 = 0;
-                }
-                data[3] = (byte) (data3_4>>8);
-                data[4] = (byte) ((byte) data3_4&0xff);
-
-                throttle_val.setText("" + data3_4);
-            }
-        });
 
         /***********************************************
                           控制属性初始化
@@ -355,28 +280,27 @@ public class MainControllerActivity extends BaseActivity {
                 //上升
                 case  R.id.rise:
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-
-//                        imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
-//                        imageViewRise.setMaxWidth(60);
-//                        imageViewRise.setMaxHeight(60);
+                        imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
+                        imageViewRise.setMaxWidth(60);
+                        imageViewRise.setMaxHeight(60);
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                        imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
-//                        imageViewLand.setAdjustViewBounds(true);
-//                        imageViewLand.setMaxWidth(60);
-//                        imageViewLand.setMaxHeight(55);
+                        imageViewRise.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
+                        imageViewLand.setAdjustViewBounds(true);
+                        imageViewLand.setMaxWidth(60);
+                        imageViewLand.setMaxHeight(55);
                     }
                     break;
                 //下降
                 case  R.id.land:
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-//                        imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
+                        imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_03));
                         imageViewLand.setRotation(180);
                     } else if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-//                        imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
-//                        imageViewRise.setAdjustViewBounds(true);
-//                        imageViewLand.setRotation(180);
-//                        imageViewLand.setMaxWidth(60);
-//                        imageViewLand.setMaxHeight(55);
+                        imageViewLand.setImageDrawable(getResources().getDrawable(R.mipmap.rise_land));
+                        imageViewRise.setAdjustViewBounds(true);
+                        imageViewLand.setRotation(180);
+                        imageViewLand.setMaxWidth(60);
+                        imageViewLand.setMaxHeight(55);
                     }
                     break;
                 default:
@@ -397,7 +321,7 @@ public class MainControllerActivity extends BaseActivity {
             BluetoothDevice device = adapter.getRemoteDevice(UAVApplication.BLUETOOTHVALUE);  //获取蓝牙设备
             UUID uuid = UUID.fromString(UAVApplication.UAVUUID);                //获取UUID（可以不写在线程里）
             try {
-                socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
+                BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuid);      //连接服务端
                 socket.connect();
 
                 out = socket.getOutputStream();    // 获取输出流
@@ -421,6 +345,8 @@ public class MainControllerActivity extends BaseActivity {
             }
         }
     }
+
+
 
 
     private void setData() {
