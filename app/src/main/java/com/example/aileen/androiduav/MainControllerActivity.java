@@ -206,8 +206,6 @@ public class MainControllerActivity extends BaseActivity {
             }
         });
 
-
-
         findViewById(R.id.fix).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
