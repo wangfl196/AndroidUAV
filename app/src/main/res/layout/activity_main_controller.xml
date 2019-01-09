@@ -67,7 +67,7 @@
 
                 >
                 <com.example.aileen.androiduav.RockerView
-
+                    android:visibility="gone"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="10dp"
                     android:id="@+id/rocker_1"
@@ -80,7 +80,7 @@
                     app:rockerScale="0.6" />
 
                 <RelativeLayout
-                    android:visibility="gone"
+
                     android:id="@+id/direction_1"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="15dp"
@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:textSize="20dp"
-                        android:text="油门值:"/>
+                        android:text="油   门:"/>
                     <TextView
                         android:layout_alignTop="@+id/throttle_title"
                         android:layout_toRightOf="@id/throttle_title"
@@ -154,9 +154,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/throttle_title"
                         android:layout_marginBottom="-30dp"
-                        android:text="方   向:"
+                        android:text="俯   仰:"
                         android:textSize="20dp" />
-
                     <TextView
                         android:id="@+id/direction_val"
                         android:layout_width="wrap_content"
@@ -164,7 +163,43 @@
                         android:layout_alignTop="@+id/direction_title"
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/direction_title"
-                        android:text="上"
+                        android:text=""
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/hangx_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/throttle_title"
+                        android:layout_marginBottom="-60dp"
+                        android:text="航   向:"
+                        android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/hangx_val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/hangx_title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/direction_title"
+                        android:text=""
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/hengg_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/throttle_title"
+                        android:layout_marginBottom="-90dp"
+                        android:text="横   滚:"
+                        android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/hengg_val"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/hengg_title"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/direction_title"
+                        android:text=""
                         android:textSize="20dp" />
                 </RelativeLayout>
                 <RelativeLayout
@@ -214,7 +249,7 @@
                 android:gravity="center">
 
                 <com.example.aileen.androiduav.RockerView
-
+                    android:visibility="gone"
                     android:id="@+id/rocker_2"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="10dp"
@@ -227,29 +262,46 @@
                     app:rockerScale="0.6" />
 
                 <RelativeLayout
-                    android:visibility="gone"
+
                     android:id="@+id/direction_2"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="15dp"
                     android:layout_width="150dp"
                     android:layout_height="150dp">
                     <ImageView
-                        android:id="@+id/rise"
+                        android:visibility="gone"
+                        android:id="@+id/direction_right_up"
                         android:layout_alignParentTop="true"
                         android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:background="@mipmap/direction_icon_03"/>
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:rotation="180"
+                        android:background="@mipmap/direction_icon_15"/>
                     <ImageView
-                        android:id="@+id/land"
+                        android:visibility="gone"
+                        android:id="@+id/direction_right_down"
                         android:layout_alignParentBottom="true"
                         android:layout_centerInParent="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="55dp"
-                        android:rotation="180"
-                        android:background="@mipmap/direction_icon_03"/>
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:background="@mipmap/direction_icon_15"/>
+                    <ImageView
 
-
+                        android:id="@+id/direction_right_left"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:rotation="90"
+                        android:background="@mipmap/direction_icon_15"/>
+                    <ImageView
+                        android:id="@+id/direction_right_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:rotation="270"
+                        android:background="@mipmap/direction_icon_15"/>
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
