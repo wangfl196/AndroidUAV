@@ -108,10 +108,10 @@ public class MainActivity extends BaseActivity {
 
     private void setUavInitData() {
         SharedPreferences.Editor spe = sharedPreferences.edit();
-        spe.putInt("data3",  uavApplication.data[3]<<8);
-        spe.putInt("data5", uavApplication.data[5]<<8);
-        spe.putInt("data7", uavApplication.data[7]<<8);
-        spe.putInt("data9", uavApplication.data[9]<<8);
+        spe.putInt("data3",  uavApplication.data_3_4);
+        spe.putInt("data5", uavApplication.data_5_6);
+        spe.putInt("data7", uavApplication.data_7_8);
+        spe.putInt("data9", uavApplication.data_9_10);
         spe.commit();
     }
 

@@ -207,13 +207,13 @@
                     android:layout_height="60dp"
                     >
                     <ImageView
-                        android:id="@+id/throttle_add"
+                        android:id="@+id/throttle_reduce"
                         android:layout_alignParentLeft="true"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@mipmap/add"/>
+                        android:background="@mipmap/reduce"/>
                     <LinearLayout
                         android:layout_alignParentTop="true"
                         android:layout_centerInParent="true"
@@ -233,13 +233,13 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/throttle_reduce"
+                        android:id="@+id/throttle_add"
                         android:layout_alignParentRight="true"
                         android:layout_centerInParent="true"
                         android:layout_gravity="center"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:background="@mipmap/reduce"/>
+                        android:background="@mipmap/add"/>
                 </RelativeLayout>
             </LinearLayout>
             <LinearLayout
@@ -331,7 +331,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
-
+                    android:id="@+id/plane_up"
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
@@ -344,6 +344,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/plane_down"
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
