@@ -186,9 +186,11 @@
                         android:layout_width="150dp"
                         android:layout_height="match_parent">
                         <SeekBar
+                            android:id="@+id/throttle_bar"
                             android:layout_gravity="center"
                             android:progressDrawable="@drawable/uavseekbar"
                             android:thumb="@drawable/seekbar_btn"
+
                             android:maxHeight="3dp"
                             android:minHeight="3dp"
                             android:layout_width="match_parent"
@@ -306,7 +308,7 @@
                     android:layout_gravity="center"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:background="@mipmap/replace"/>
+                    android:background="@mipmap/replace_01"/>
             </LinearLayout>
 
 
