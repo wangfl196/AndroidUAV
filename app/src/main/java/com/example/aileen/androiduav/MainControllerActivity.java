@@ -16,6 +16,7 @@ import com.example.aileen.androiduav.RockerView.Direction;
 import com.example.aileen.androiduav.RockerView.DirectionMode;
 import com.example.aileen.androiduav.RockerView.OnShakeListener;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.UUID;
 
@@ -202,6 +203,12 @@ public class MainControllerActivity extends BaseActivity {
                 } else if (UAV.getActionSign() == 0) {
                     UAV.setActionSign(UAV.ACTION_SIGN_START);
                     ConnectThread.start(); //开启线程
+                } else if(UAV.getActionSign() == 1) {
+//                    try {
+//                        socket.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
