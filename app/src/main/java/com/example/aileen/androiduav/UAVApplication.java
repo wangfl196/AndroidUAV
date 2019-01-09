@@ -36,13 +36,15 @@ public class UAVApplication extends Application {
     public static final Boolean  UAV_STABLE_SIGN_OPEN = true; //悬停开启标识
     public static final Boolean  UAV_STABLE_SIGN_CLOSE = false; //悬停关闭标识
     public static final String UAVUUID = "00001101-0000-1000-8000-00805F9B34FB";
-    public static final String BLUETOOTHVALUE = "00:0E:0E:0E:30:F6";
-//    public static final String BLUETOOTHVALUE = "00:0E:0E:15:84:E3";
-
+    public static final String BLUETOOTHVALUE = "00:0E:0E:15:84:F0";
 
     /************************************
 
      ************************************/
+    private boolean UAV_ACTION_UP = false;//上
+    private boolean UAV_ACTION_DOWN = false;//下
+    private boolean UAV_ACTION_RIGHT = false;//左
+    private boolean UAV_ACTION_LEFT = false;//右
     private int ActionSign; //无人机启动标识
     private Boolean UavStable = UAV_STABLE_SIGN_CLOSE; //无人机悬停标识
 
@@ -62,4 +64,9 @@ public class UAVApplication extends Application {
     public int getActionSign() {
         return ActionSign;
     }
+
+    /**
+     *  3、4 油门
+     *
+     */
 }

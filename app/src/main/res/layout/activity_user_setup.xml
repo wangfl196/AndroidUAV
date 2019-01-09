@@ -29,19 +29,19 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="80dp"
-                    android:layout_height="wrap_content"
-                    android:text="o(∩_∩)o"/>
-                <EditText
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
+                <!--<TextView-->
+                    <!--android:layout_width="80dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="o(∩_∩)o"/>-->
+                <!--<EditText-->
 
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="wrap_content"/>-->
+            <!--</LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
