@@ -165,13 +165,13 @@ public class MainControllerActivity extends BaseActivity {
     /**
      * 初始化
      */
-    private void initController () {
+    private void initController ()  {
         //初始化data数据
         setData();
         //初始化数据
-        UAV.setActionSign(UAV.ACTION_SIGN_STOP); //设置无人机启动标识
-        direction_val = findViewById(R.id.direction_val); //油门值
-        throttle_val = findViewById(R.id.throttle_val); //方向
+        UAV.setActionSign(UAV.ACTION_SIGN_STOP);  //设置无人机启动标识
+        direction_val = findViewById(R.id.direction_val);  //油门值
+        throttle_val = findViewById(R.id.throttle_val);   //方向
         //油门值视图初始化
         throttle_val.setText("" + data3_4);
 
