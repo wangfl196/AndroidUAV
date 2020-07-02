@@ -36,11 +36,13 @@ public class UAVApplication extends Application {
     public static final Boolean  UAV_STABLE_SIGN_OPEN = true; //悬停开启标识
     public static final Boolean  UAV_STABLE_SIGN_CLOSE = false; //悬停关闭标识
     public static final String UAVUUID = "00001101-0000-1000-8000-00805F9B34FB";
-    public static final String BLUETOOTHVALUE = "00:0E:0E:15:84:F0";
-    public int data_3_4;
-    public int data_5_6;
-    public int data_7_8;
-    public int data_9_10;
+//    public static final String BLUETOOTHVALUE = "00:0E:0E:0E:30:F5";
+//    public static final String BLUETOOTHVALUE = "00:0E:0E:15:84:F0";
+    public static final String BLUETOOTHVALUE = "00:0E:0E:15:84:E3";
+    public int data_3_4 = 0;
+    public int data_5_6 = 0;
+    public int data_7_8 = 0;
+    public int data_9_10 = 0;
     /************************************
 
      ************************************/

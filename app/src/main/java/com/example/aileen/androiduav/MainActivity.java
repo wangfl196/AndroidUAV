@@ -3,7 +3,6 @@ package com.example.aileen.androiduav;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,14 +12,13 @@ public class MainActivity extends BaseActivity {
     private String Bluetooth;
     private ImageView imageViewLogo;
     private UAVApplication uavApplication; //application
-    public SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         uavApplication = (UAVApplication) this.getApplication();
         imageViewLogo = findViewById(R.id.first_logo);
-        sharedPreferences = getSharedPreferences("uav_data", MODE_PRIVATE);
         //初始化
         initActivity();
 
@@ -70,10 +68,6 @@ public class MainActivity extends BaseActivity {
      */
     private void initActivity() {
 
-        uavApplication.data_3_4 = sharedPreferences.getInt("data3", 0);
-        uavApplication.data_5_6 = sharedPreferences.getInt("data5", 0);
-        uavApplication.data_7_8 = sharedPreferences.getInt("data7", 0);
-        uavApplication.data_9_10 = sharedPreferences.getInt("data9", 0);
 
         //接收Intent
         try {
@@ -107,12 +101,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setUavInitData() {
-        SharedPreferences.Editor spe = sharedPreferences.edit();
-        spe.putInt("data3",  uavApplication.data_3_4);
-        spe.putInt("data5", uavApplication.data_5_6);
-        spe.putInt("data7", uavApplication.data_7_8);
-        spe.putInt("data9", uavApplication.data_9_10);
-        spe.commit();
+
     }
 
     /**

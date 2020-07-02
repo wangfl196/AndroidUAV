@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -52,7 +53,7 @@ public class MainControllerActivity extends BaseActivity {
     private OutputStream out;
     private boolean plane_up_status = false; //飞机图标
     private boolean plane_down_status = false; //飞机图标
-
+    private SharedPreferences sharedPreferences;
     private int data3_4;
     private int data5_6;
     private int data7_8;
@@ -69,10 +70,11 @@ public class MainControllerActivity extends BaseActivity {
         setContentView(R.layout.activity_main_controller);
         UAV = (UAVApplication) this.getApplication();
         UavStable = findViewById(R.id.uav_stable);
+        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+
         //初始化
         initController();
 
-//        tv = (TextView) findViewById(R.id.text);
         //摇杆控件
         initrokerview();
 
@@ -80,6 +82,12 @@ public class MainControllerActivity extends BaseActivity {
         findViewById(R.id.controller_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences.Editor spe = sharedPreferences.edit();
+                spe.putInt("data3", data3_4);
+                spe.putInt("data5", data5_6);
+                spe.putInt("data7", data7_8);
+                spe.putInt("data9", data9_10);
+                spe.commit();
                 Intent i = new Intent(MainControllerActivity.this, MainActivity.class);
                 i.putExtra("ActionSign", UAV.getActionSign());
                 startActivity(i);
@@ -277,11 +285,7 @@ public class MainControllerActivity extends BaseActivity {
                     ConnectThread.start(); //开启线程
                     Toast.makeText(MainControllerActivity.this, "蓝牙已连接！", Toast.LENGTH_LONG).show();
                 } else if(UAV.getActionSign() == 1) {
-//                    try {
-//                        socket.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
+                    //关闭socket
                 }
             }
         });
@@ -289,18 +293,28 @@ public class MainControllerActivity extends BaseActivity {
         findViewById(R.id.fix).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    out.write(data);                        //发送数据
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    out.write(data);                        //发送数据
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+                data3_4 = 50;
+                data5_6 = 1500;
+                data7_8 = 1500;
+                data9_10 = 1500;
+                throttle_val.setText("" + data3_4);
+                hangx_val.setText("" + data5_6);
+                hengg_val.setText("" + data7_8);
+                direction_val.setText("" + data9_10);
+                Toast.makeText(MainControllerActivity.this, "数值初始化", Toast.LENGTH_SHORT).show();
+
             }
         });
 
         findViewById(R.id.throttle_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                data3_4 += 100;
+                data3_4 += 20;
                 if (data3_4 > 1000) {
                     data3_4 = 1000;
                 }
@@ -308,14 +322,13 @@ public class MainControllerActivity extends BaseActivity {
                 data[4] = (byte) (data3_4&0xff);
                 directionSeekBar.setProgress(data3_4);
                 throttle_val.setText("" + data3_4);
-                UAV.data_3_4 = data3_4;
             }
         });
 
         findViewById(R.id.throttle_reduce).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                data3_4 -= 50;
+                data3_4 -= 20;
                 if (data3_4 < 0) {
                     data3_4 = 0;
                 }
@@ -323,7 +336,6 @@ public class MainControllerActivity extends BaseActivity {
                 data[4] = (byte) ((byte) data3_4&0xff);
                 directionSeekBar.setProgress(data3_4);
                 throttle_val.setText("" + data3_4);
-                UAV.data_3_4 = data3_4;
             }
         });
 
@@ -369,7 +381,6 @@ public class MainControllerActivity extends BaseActivity {
                 data[3] = (byte) (data3_4>>8);
                 data[4] = (byte) (data3_4&0xff);
                 throttle_val.setText("" + data3_4);
-                UAV.data_3_4 = data3_4;
             }
 
             @Override
@@ -408,7 +419,6 @@ public class MainControllerActivity extends BaseActivity {
                         }
                         data[9] = (byte) (data9_10>>8);
                         data[10] = (byte) (data9_10&0xff);
-                        UAV.data_9_10 = data9_10;
                         direction_val.setText("" + data9_10);
                         //图标
                         imageViewDirectionUp.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
@@ -428,14 +438,13 @@ public class MainControllerActivity extends BaseActivity {
                         }
                         data[9] = (byte) (data9_10>>8);
                         data[10] = (byte) (data9_10&0xff);
-                        UAV.data_9_10 = data9_10;
                         direction_val.setText("" + data9_10);
                         //图标
                         imageViewDirectionDown.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
                     }
                     break;
                 //左
-                case  R.id.direction_right:
+                case  R.id.direction_right :
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                         imageViewDirectionRight.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_15));
                         imageViewDirectionRight.setRotation(270);
@@ -448,7 +457,6 @@ public class MainControllerActivity extends BaseActivity {
                         data[7] = (byte) (data7_8>>8);
                         data[8] = (byte) (data7_8&0xff);
                         hengg_val.setText("" + data7_8);
-                        UAV.data_7_8 = data7_8;
                         imageViewDirectionRight.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
                         imageViewDirectionRight.setRotation(270);
                     }
@@ -467,7 +475,6 @@ public class MainControllerActivity extends BaseActivity {
                         data[7] = (byte) (data7_8>>8);
                         data[8] = (byte) (data7_8&0xff);
                         hengg_val.setText("" + data7_8);
-                        UAV.data_7_8 = data7_8;
                         imageViewDirectionLeft.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
                         imageViewDirectionLeft.setRotation(90);
                     }
@@ -485,7 +492,6 @@ public class MainControllerActivity extends BaseActivity {
                         data[5] = (byte) (data5_6>>8);
                         data[6] = (byte) (data5_6&0xff);
                         hangx_val.setText("" + data5_6);
-                        UAV.data_5_6 = data5_6;
                         imageViewDirection_right_right.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
                         imageViewDirection_right_right.setRotation(270);
                     }
@@ -503,7 +509,6 @@ public class MainControllerActivity extends BaseActivity {
                         data[5] = (byte) (data5_6>>8);
                         data[6] = (byte) (data5_6&0xff);
                         hangx_val.setText("" + data5_6);
-                        UAV.data_5_6 = data5_6;
                         imageViewDirection_right_left.setImageDrawable(getResources().getDrawable(R.mipmap.direction_icon_light));
                         imageViewDirection_right_left.setRotation(90);
                     }
@@ -557,10 +562,11 @@ public class MainControllerActivity extends BaseActivity {
 
 
     private void setData() {
-        data3_4 = UAV.data_3_4 == 0 ? 50 : UAV.data_3_4;
-        data5_6 = UAV.data_5_6 == 0 ? 1500 : UAV.data_5_6;
-        data7_8 = UAV.data_7_8 == 0 ? 1500 : UAV.data_7_8;
-        data9_10 = UAV.data_9_10 == 0 ? 1500 : UAV.data_9_10;
+        data3_4 = sharedPreferences.getInt("data3", 50);
+        data5_6 = sharedPreferences.getInt("data5", 1500);
+        data7_8 = sharedPreferences.getInt("data7", 1500);
+        data9_10 = sharedPreferences.getInt("data9", 1500);
+
         //固定值
         data[0] = (byte) 0xAA;
         data[1] = (byte) 0xC0;
@@ -604,4 +610,15 @@ public class MainControllerActivity extends BaseActivity {
         data[33] = (byte) 0x0A;
     }
 
+
+    @Override
+    public void onBackPressed() {
+        SharedPreferences.Editor spe = sharedPreferences.edit();
+        spe.putInt("data3", data3_4);
+        spe.putInt("data5", data5_6);
+        spe.putInt("data7", data7_8);
+        spe.putInt("data9", data9_10);
+        spe.commit();
+        super.onBackPressed();
+    }
 }
